@@ -28,7 +28,7 @@ class Installer implements InstallerInterface
     public function getInstallPath(PackageInterface $package)
     {
 	
-		$docRootName = "./www"; 
+		$docRootName = "./public_html"; 
 		if($configDocRoot = $this->composer->getConfig()->get("document-root-path")) {
 			$docRootName = rtrim($configDocRoot,"/");
 		}
@@ -53,10 +53,9 @@ class Installer implements InstallerInterface
 		@unlink($installPath . "phpdox.xml.dist");
 		@unlink($installPath . "phpunit.xml.dist");
 		@unlink($installPath . "phpunit-no-coverage.xml.dist");
-		
-		rename($installPath . "plugins_example", $installPath . "plugins");
-		rename($installPath . "website_example", $installPath . "website");
-		
+		$this->recursiveDelete($installPath . "plugins_example");
+		$this->recursiveDelete($installPath . "website_example");
+
 		$this->recursiveDelete($installPath . "update");
 		$this->recursiveDelete($installPath . "build");
 		$this->recursiveDelete($installPath . "tests");
